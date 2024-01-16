@@ -29,6 +29,78 @@
             "lng": 126.413913
           }
         },
+        {
+          "id": "1",
+          "type": ["plastic", "metal"],
+          "distant": 2.1,
+          "location": {
+            "lat": 33.3910079,
+            "lng": 126.2220771
+          }
+        },
+        {
+          "id": "2",
+          "type": ["paper"],
+          "distant": 12.3,
+          "location": {
+            "lat": 33.490297,
+            "lng": 126.413913
+          }
+        },
+        {
+          "id": "1",
+          "type": ["plastic", "metal"],
+          "distant": 2.1,
+          "location": {
+            "lat": 33.3910079,
+            "lng": 126.2220771
+          }
+        },
+        {
+          "id": "2",
+          "type": ["paper"],
+          "distant": 12.3,
+          "location": {
+            "lat": 33.490297,
+            "lng": 126.413913
+          }
+        },
+        {
+          "id": "1",
+          "type": ["plastic", "metal"],
+          "distant": 2.1,
+          "location": {
+            "lat": 33.3910079,
+            "lng": 126.2220771
+          }
+        },
+        {
+          "id": "2",
+          "type": ["paper"],
+          "distant": 12.3,
+          "location": {
+            "lat": 33.490297,
+            "lng": 126.413913
+          }
+        },
+        {
+          "id": "1",
+          "type": ["plastic", "metal"],
+          "distant": 2.1,
+          "location": {
+            "lat": 33.3910079,
+            "lng": 126.2220771
+          }
+        },
+        {
+          "id": "2",
+          "type": ["paper"],
+          "distant": 12.3,
+          "location": {
+            "lat": 33.490297,
+            "lng": 126.413913
+          }
+        },
       ];
 
       return tempData.map((item) {

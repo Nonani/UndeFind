@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
+        allowImplicitScrolling: true,
 
         children: <Widget>[
           PhoneBookScreen(),

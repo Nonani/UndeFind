@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../view_models/trash_map_view_model.dart';
 
 class TrashMapScreen extends StatefulWidget {
-
-
   TrashMapScreen();
 
   @override
@@ -19,72 +18,134 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
   int _currentIndex = 0;
   final _pageController = PageController();
 
-
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<TrashMapViewModel>(context);
     Logger logger = Logger();
     return Scaffold(
       body: Stack(
-        children: [viewModel.isFetching
-            ? CircularProgressIndicator() // 데이터를 불러오는 동안 로딩 표시
-            : KakaoMap(
-          // 카카오맵 뷰
+        children: [
+          viewModel.isFetching
+              ? CircularProgressIndicator() // 데이터를 불러오는 동안 로딩 표시
+              : KakaoMap(
+                  // 카카오맵 뷰
 
-          currentLevel: 10,
-          center: LatLng(33.488646, 126.5311884), // 초기 위치
-          onMarkerTap: (id, latlng, x) {
-            // 마커를 탭했을 때
-            logger.d(latlng);
-          },
-          onMapCreated: ((controller) async {
-            mapController = controller;
-            await viewModel.fetchTrash(); // 쓰레기 데이터를 불러옵니다.
-            await mapController.addMarker(
-                markers: viewModel.trashList
-                    .map((e) => Marker(
-                  markerId: e.id.toString(),
-                  latLng: e.location,
-                  infoWindowContent: e.type.toString(),
-                ))
-                    .toList());
-          }),
-        ),
-        DraggableScrollableSheet(initialChildSize: 0.4,builder: (context, controller) {
-          return Container(
-            color: Colors.white,
-            child: ListView.builder(
-              controller: controller,
-              itemCount: viewModel.trashList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(viewModel.trashList[index].type.toString()),
-                  subtitle: Text(viewModel.trashList[index].location.toString()),
-                );
-              },
+                  currentLevel: 10,
+                  center: LatLng(33.488646, 126.5311884), // 초기 위치
+                  onMarkerTap: (id, latlng, x) {
+                    // 마커를 탭했을 때
+                    logger.d(latlng);
+                  },
+                  onMapCreated: ((controller) async {
+                    mapController = controller;
+                    await viewModel.fetchTrash(); // 쓰레기 데이터를 불러옵니다.
+                    await mapController.addMarker(
+                        markers: viewModel.trashList
+                            .map((e) => Marker(
+                                  markerId: e.id.toString(),
+                                  latLng: e.location,
+                                  infoWindowContent: e.type.toString(),
+                                ))
+                            .toList());
+                  }),
+                ),
+          SlidingUpPanel(
+            panel: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24.0), // 왼쪽 위 모서리 둥글게
+                  topRight: Radius.circular(24.0), // 오른쪽 위 모서리 둥글게
+                ),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/logo.png'),
+                          width: 150,
+                          color: Colors.white,
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await viewModel.fetchTrash(); // 쓰레기 데이터를 불러옵니다.
+                            await mapController.addMarker(
+                                markers: viewModel.trashList
+                                    .map((e) => Marker(
+                                          markerId: e.id.toString(),
+                                          latLng: e.location,
+                                          infoWindowContent: e.type.toString(),
+                                        ))
+                                    .toList());
+                            logger.d(viewModel.trashList[0].location);
+                            logger.d(viewModel.trashList[1].location);
+                            setState(() {});
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          // 물결 효과의 경계를 원형으로 설정
+                          child: Container(
+                            padding: EdgeInsets.all(8.0), // 패딩을 줍니다.
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle, // 원형 모양으로 설정
+                              color: Colors.white, // 배경색 설정
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 2), // 그림자의 위치 설정
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.refresh, // 아이콘 설정
+                              color: Colors.black, // 아이콘 색상 설정
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.0),
+                          topRight: Radius.circular(24.0),
+                        ),
+                      ),
+                      child: ListView.builder(
+                        itemCount: viewModel.trashList.length,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                                viewModel.trashList[index].type.toString()),
+                            subtitle: Text(
+                                viewModel.trashList[index].location.toString()),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          );
-        }),
+            collapsed: null,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.0),
+                topRight: Radius.circular(24.0)),
+            minHeight: 100,
+            // 최소 높이 설정
+            maxHeight: 500, // 최대 높이 설정
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await viewModel.fetchTrash(); // 쓰레기 데이터를 불러옵니다.
-          await mapController.addMarker(
-              markers: viewModel.trashList
-                  .map((e) => Marker(
-                        markerId: e.id.toString(),
-                        latLng: e.location,
-                        infoWindowContent: e.type.toString(),
-                      ))
-                  .toList());
-          logger.d(viewModel.trashList[0].location);
-          logger.d(viewModel.trashList[1].location);
-          setState(() {});
-        },
-        child: Icon(Icons.refresh),
-      ),
-
     );
   }
 
