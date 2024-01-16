@@ -18,7 +18,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => TrashMapViewModel()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -35,10 +35,10 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         hintColor: Colors.black,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           color: Colors.white,
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

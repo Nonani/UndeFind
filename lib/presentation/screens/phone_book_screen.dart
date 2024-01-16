@@ -34,7 +34,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
             Container(
               height: 100,
               color: Colors.black,
-              padding: EdgeInsets.only(top: 30, left: 5),
+              padding: const EdgeInsets.only(top: 30, left: 5),
               child: Row(
                 children: [
                   Align(
@@ -45,13 +45,21 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
               )
             ),
             Container(
-              padding: EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 30),
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
               child: TextField(
                 controller: searchController,
                 onChanged: (value) {
                   filterContacts(value);
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: '검색어를 입력해주세요.',
                   border: InputBorder.none,
                   icon: Padding(
@@ -60,16 +68,8 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
                   ),
                 ),
               ),
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
             ),
-            Divider(
+            const Divider(
               height: 1,
               color: Colors.grey,
             ),
@@ -87,15 +87,15 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
                       child: Icon(contacts[index].icon),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.call),
+                      icon: const Icon(Icons.call),
                       onPressed: () {
-                        launchUrl(Uri.parse('tel:' + contacts[index].number));
+                        launchUrl(Uri.parse('tel:${contacts[index].number}'));
                       },
                     ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider(
+                  return const Divider(
                     height: 1,
                     color: Colors.grey,
                   );

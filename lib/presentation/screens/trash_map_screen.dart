@@ -7,7 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../view_models/trash_map_view_model.dart';
 
 class TrashMapScreen extends StatefulWidget {
-  TrashMapScreen();
+  const TrashMapScreen({super.key});
 
   @override
   State<TrashMapScreen> createState() => _TrashMapScreenState();
@@ -15,7 +15,6 @@ class TrashMapScreen extends StatefulWidget {
 
 class _TrashMapScreenState extends State<TrashMapScreen> {
   late KakaoMapController mapController;
-  int _currentIndex = 0;
   final _pageController = PageController();
 
   @override
@@ -26,7 +25,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
       body: Stack(
         children: [
           viewModel.isFetching
-              ? CircularProgressIndicator() // 데이터를 불러오는 동안 로딩 표시
+              ? const CircularProgressIndicator() // 데이터를 불러오는 동안 로딩 표시
               : KakaoMap(
                   // 카카오맵 뷰
 
@@ -51,7 +50,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                 ),
           SlidingUpPanel(
             panel: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24.0), // 왼쪽 위 모서리 둥글게
@@ -65,7 +64,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage('assets/images/logo.png'),
                           width: 150,
                           color: Colors.white,
@@ -88,7 +87,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                           borderRadius: BorderRadius.circular(30),
                           // 물결 효과의 경계를 원형으로 설정
                           child: Container(
-                            padding: EdgeInsets.all(8.0), // 패딩을 줍니다.
+                            padding: const EdgeInsets.all(8.0), // 패딩을 줍니다.
                             decoration: BoxDecoration(
                               shape: BoxShape.circle, // 원형 모양으로 설정
                               color: Colors.white, // 배경색 설정
@@ -97,11 +96,11 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                                   color: Colors.white.withOpacity(0.5),
                                   spreadRadius: 1,
                                   blurRadius: 2,
-                                  offset: Offset(0, 2), // 그림자의 위치 설정
+                                  offset: const Offset(0, 2), // 그림자의 위치 설정
                                 ),
                               ],
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.refresh, // 아이콘 설정
                               color: Colors.black, // 아이콘 색상 설정
                             ),
@@ -112,7 +111,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(24.0),
@@ -121,7 +120,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                       ),
                       child: ListView.builder(
                         itemCount: viewModel.trashList.length,
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
@@ -137,7 +136,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
               ),
             ),
             collapsed: null,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24.0),
                 topRight: Radius.circular(24.0)),
             minHeight: 100,
