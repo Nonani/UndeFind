@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:undefind_project/presentation/screens/phone_book_screen.dart';
 import 'package:undefind_project/presentation/screens/trash_map_screen.dart';
 
 import '../view_models/trash_map_view_model.dart';
@@ -29,8 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
+
         children: <Widget>[
-          TrashMapScreen(),
+          PhoneBookScreen(),
           TrashMapScreen(),
           NaviMapScreen(),
         ],
