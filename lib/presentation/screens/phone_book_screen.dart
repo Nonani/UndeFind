@@ -29,6 +29,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
       height: sizeY,
       color: Colors.black,
       child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             Container(
