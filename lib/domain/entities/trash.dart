@@ -4,6 +4,7 @@ class Trash{
   final String id;
   final List<String> type;
   final LatLng location;
-  Trash(this.id, this.type, this.location);
+  final double distant;
+  Trash(this.id, this.type, this.location, this.distant);
 
 }

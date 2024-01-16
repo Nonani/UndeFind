@@ -13,11 +13,12 @@ class TrashMapViewModel extends ChangeNotifier {
   List<Trash> get trashList => _trashList;
   bool get isFetching => _isFetching;
 
-  void fetchTrash() async {
+  Future<bool> fetchTrash() async {
     _isFetching = true;
     notifyListeners();
     _trashList = await useCase.execute();
     _isFetching = false;
     notifyListeners();
+    return true;
   }
 }
