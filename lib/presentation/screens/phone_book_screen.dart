@@ -80,6 +80,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
               height: sizeY,
               child: ListView.separated(
                 itemCount: contacts.length,
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: Text(contacts[index].name),

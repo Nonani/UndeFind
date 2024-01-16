@@ -1,4 +1,5 @@
 # Miscellaneous
+firebase_options.dart
 assets/.env
 *.class
 *.log

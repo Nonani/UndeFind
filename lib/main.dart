@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:provider/provider.dart';
@@ -8,10 +9,15 @@ import 'package:undefind_project/presentation/screens/trash_map_screen.dart';
 import 'package:undefind_project/presentation/view_models/trash_map_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/.env"); // 2번코드
   AuthRepository.initialize(appKey: dotenv.env['APP_KEY'] ?? '');
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     MultiProvider(
