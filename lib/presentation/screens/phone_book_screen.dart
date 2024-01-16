@@ -89,7 +89,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
                     trailing: IconButton(
                       icon: const Icon(Icons.call),
                       onPressed: () {
-                        launchUrl(Uri.parse('tel:${contacts[index].number}'));
+                        launchPhoneUrl(Uri.parse('tel:${contacts[index].number}'));
                       },
                     ),
                   );
@@ -108,9 +108,9 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
     );
   }
 
-  void launchUrl(Uri uri) async {
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
+  void launchPhoneUrl(Uri uri) async {
+    if(await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $uri';
     }
