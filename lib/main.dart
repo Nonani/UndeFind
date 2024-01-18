@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:undefind_project/presentation/screens/home_screen.dart';
 import 'package:undefind_project/presentation/screens/navi_map_screen.dart';
+import 'package:undefind_project/presentation/screens/splash_screen.dart';
 import 'package:undefind_project/presentation/screens/trash_map_screen.dart';
 import 'package:undefind_project/presentation/view_models/trash_map_view_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -72,7 +73,24 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: FutureBuilder(
+        future: Future.delayed(const Duration(seconds: 3), () => "Intro Completed."),
+        builder: (context, snapshot) {
+          return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 1000),
+              child: _splashLoadingWidget(snapshot)
+          );
+        },
+      )
     );
+  }
+  Widget _splashLoadingWidget(AsyncSnapshot<Object?> snapshot) {
+    if(snapshot.hasError) {
+      return const Text("Error!!");
+    } else if(snapshot.hasData) {
+      return const HomeScreen();
+    } else {
+      return const SplashScreen();
+    }
   }
 }
