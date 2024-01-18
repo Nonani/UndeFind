@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import '../../data/repositories/trash_repository.dart';
 import '../../domain/entities/trash.dart';
 import '../../domain/usecases/fetch_trash_usecase.dart';
@@ -10,7 +11,11 @@ class TrashMapViewModel extends ChangeNotifier {
 
   TrashMapViewModel();
 
+  LatLng get jejuDocheong => LatLng(33.4890464, 126.4980324);
   List<Trash> get trashList => _trashList;
+  List<Trash> get distantSortedTrashList => _trashList
+    ..sort((a, b) => -a.distant.compareTo(b.distant));
+
   bool get isFetching => _isFetching;
 
   Future<bool> fetchTrash() async {

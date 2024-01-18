@@ -21,8 +21,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<TrashMapViewModel>(context);
     Logger logger = Logger();
-    return Scaffold(
-      body: Stack(
+    return Stack(
         children: [
           viewModel.isFetching
               ? const CircularProgressIndicator() // 데이터를 불러오는 동안 로딩 표시
@@ -144,8 +143,7 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
             maxHeight: 500, // 최대 높이 설정
           ),
         ],
-      ),
-    );
+      );
   }
 
   LatLng getAverageLatLng(Set<Marker> markers) {
