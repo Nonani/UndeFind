@@ -122,7 +122,6 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
   List<Contact> buildContacts() {
     List<Contact> contacts = [];
     // 전화번호부
-
     contacts.add(Contact(
         '제주청 해양오염방제과', '064-801-2591', Icons.sentiment_very_satisfied));
     contacts.add(Contact(
