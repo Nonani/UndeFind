@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../view_models/trash_map_view_model.dart';
+
+import 'package:http/http.dart' as http;
+
+String address = '';
 
 class NaviMapScreen extends StatelessWidget {
   const NaviMapScreen({super.key});
@@ -40,60 +47,77 @@ class NaviMapScreen extends StatelessWidget {
               itemCount: viewModel.distantSortedTrashList.length,
               itemBuilder: (context, index) {
                 return Container(
-                    height: 200,
+                    height: 120,
                     margin: const EdgeInsets.only(bottom: 8.0),
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Text(
-                          viewModel.distantSortedTrashList[index].type
-                              .toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Container(
+                          width: sizeX * 4/5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '쓰레기 번호 : ' + index.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text("종류 : " +
+                                    viewModel.distantSortedTrashList[index].type
+                                        .toString(),
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text('주소 : '+
+                                  getAddress(viewModel.distantSortedTrashList[index].location.latitude,
+                                      viewModel.distantSortedTrashList[index].location.longitude),
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                         ),
-                        Text(
-                          viewModel.distantSortedTrashList[index].location
-                              .toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          viewModel.distantSortedTrashList[index].type
-                              .toString(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              launchNaviUrl(Uri.parse(
-                                  'https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=' +
-                                      viewModel.jejuDocheong.latitude
-                                          .toString() +
-                                      '%2C' +
-                                      viewModel.jejuDocheong.longitude
-                                          .toString() +
-                                      '%3B' +
-                                      viewModel.distantSortedTrashList[index]
-                                          .location.latitude
-                                          .toString() +
-                                      '%2C' +
-                                      viewModel.distantSortedTrashList[index]
-                                          .location.longitude
-                                          .toString()
-                                      ));
-                            },
-                            icon: const Icon(Icons.assistant_navigation))
+                        Container(
+                            width: sizeX * 1/5,
+
+                            child: IconButton(
+                                iconSize: 35,
+                                onPressed: () {
+                                  launchNaviUrl(Uri.parse(
+                                      'https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=' +
+                                          viewModel.jejuDocheong.latitude
+                                              .toString() +
+                                          '%2C' +
+                                          viewModel.jejuDocheong.longitude
+                                              .toString() +
+                                          '%3B' +
+                                          viewModel.distantSortedTrashList[index]
+                                              .location.latitude
+                                              .toString() +
+                                          '%2C' +
+                                          viewModel.distantSortedTrashList[index]
+                                              .location.longitude
+                                              .toString()
+                                  ));
+                                },
+                                icon: const Icon(Icons.map))
+                        )
                       ],
-                    ));
+                    )
+                );
               },
             ),
           ),
@@ -109,4 +133,23 @@ class NaviMapScreen extends StatelessWidget {
       throw 'Could not launch $uri';
     }
   }
+
+  static Future<String> getPlaceAddress(double latitude, double longtitude) async{
+    String key = dotenv.env['GOOGLE_APP_KEY'];
+    final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longtitude&key=$key&language=ko';
+    final response = await http.get(Uri.parse(url));
+    //print(jsonDecode(response.body)['results'][0]['formatted_address']);
+    return jsonDecode(response.body)['results'][0]['formatted_address'];
+  }
+
+  void ReverseGeocoding(double latitude, double longtitude) async {
+    address = await getPlaceAddress(latitude, longtitude);
+    //print(address);
+  }
+
+  String getAddress(double latitude, double longtitude) {
+    ReverseGeocoding(latitude, longtitude);
+    return address;
+  }
+
 }
