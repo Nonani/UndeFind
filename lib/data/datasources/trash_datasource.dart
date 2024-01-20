@@ -20,6 +20,7 @@ class TrashDataSource {
     try {
       final List<dynamic> json = jsonDecode(response.body);
       List<Trash> trash = json.map((e) => Trash.fromJson(e)).toList();
+
       return trash;
     } catch (e) {
       logger.e(e);
