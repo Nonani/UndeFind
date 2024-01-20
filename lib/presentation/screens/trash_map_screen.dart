@@ -3,6 +3,7 @@ import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:undefind_project/domain/entities/trash.dart';
 
 import '../view_models/trash_map_view_model.dart';
 
@@ -15,12 +16,12 @@ class TrashMapScreen extends StatefulWidget {
 
 class _TrashMapScreenState extends State<TrashMapScreen> {
   late KakaoMapController mapController;
-  final _pageController = PageController();
+  late TrashMapViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<TrashMapViewModel>(context);
     Logger logger = Logger();
+    viewModel = Provider.of<TrashMapViewModel>(context, listen: false);
     return Stack(
         children: [
           viewModel.isFetching
@@ -29,14 +30,15 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
                   // 카카오맵 뷰
 
                   currentLevel: 10,
-                  center: LatLng(33.488646, 126.5311884), // 초기 위치
+                  center: viewModel.jejuDocheong, // 초기 위치
                   onMarkerTap: (id, latlng, x) {
                     // 마커를 탭했을 때
                     logger.d(latlng);
                   },
                   onMapCreated: ((controller) async {
                     mapController = controller;
-                    await viewModel.fetchTrash(); // 쓰레기 데이터를 불러옵니다.
+                     // 쓰레기 데이터를 불러옵니다.
+                    await viewModel.fetchTrash();
                     await mapController.addMarker(
                         markers: viewModel.trashList
                             .map((e) => Marker(
@@ -146,14 +148,14 @@ class _TrashMapScreenState extends State<TrashMapScreen> {
       );
   }
 
-  LatLng getAverageLatLng(Set<Marker> markers) {
+  LatLng getAverageLatLng(List<Trash> latLngs) {
     double sumLat = 0;
     double sumLng = 0;
-    for (Marker marker in markers) {
-      sumLat += marker.latLng.latitude;
-      sumLng += marker.latLng.longitude;
+    for (Trash t in latLngs) {
+      sumLat += t.location.latitude;
+      sumLng += t.location.longitude;
     }
-    print(LatLng(sumLat / markers.length, sumLng / markers.length));
-    return LatLng(sumLat / markers.length, sumLng / markers.length);
+    print(LatLng(sumLat / latLngs.length, sumLng / latLngs.length));
+    return LatLng(sumLat / latLngs.length, sumLng / latLngs.length);
   }
 }

@@ -1,61 +1,30 @@
-  import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:dio/dio.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:logger/logger.dart';
 
-  import '../../domain/entities/trash.dart';
-  import 'package:http/http.dart' as http;
-  import 'dart:convert';
+import '../../domain/entities/trash.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-  class TrashDataSource {
-    final String baseUrl = 'https://example.com';
-    TrashDataSource();
+class TrashDataSource {
+  final String baseUrl = 'https://hoduhodu.online';
+  Logger logger = Logger();
 
-    Future<List<Trash>> fetchTrash() async {
-      // 임시 데이터
-      List<Map<String, dynamic>> tempData =[
-        {
-          "id": "1",
-          "type": ["plastic", "metal"],
-          "distant" : 2.1,
-          "priority" : 2,
-          "location": {
-            "lat": 33.3910079,
-            "lng": 126.2220771
-          }
-        },
-        {
-          "id": "2",
-          "type": ["paper"],
-          "distant" : 12.3,
-          "priority" : 1,
-          "location": {
-            "lat": 37.4882919,
-            "lng": 127.0648862
-          }
-        },
-      ];
+  TrashDataSource();
 
-      return tempData.map((item) {
-        return Trash(
-          item['id'],
-          List<String>.from(item['type']),
-          LatLng(item['location']['lat'], item['location']['lng']),
-          item['distant'],
-          item['priority'],
-        );
-      }).toList();
-      // final response = await http.get(Uri.parse('$baseUrl/trash'));
-      //
-      // if (response.statusCode == 200) {
-      //   List jsonResponse = json.decode(response.body);
-      //
-      //   return jsonResponse.map((item) {
-      //     return Trash(
-      //       item['id'],
-      //       List<String>.from(item['type']),
-      //       LatLng(item['location']['lat'], item['location']['lng']),
-      //     );
-      //   }).toList();
-      // } else {
-      //   throw Exception('Failed to load trash from the server.');
-      // }
+  Future<List<Trash>> fetchTrash() async {
+    final url = Uri.parse(
+      'https://hoduhodu.online/trash/priority/?random=true&size=10',
+    );
+    final response = await http.get(url);
+    try {
+      final List<dynamic> json = jsonDecode(response.body);
+      List<Trash> trash = json.map((e) => Trash.fromJson(e)).toList();
+      return trash;
+    } catch (e) {
+      logger.e(e);
+      throw Exception('Failed to load trash');
     }
+
   }
+}

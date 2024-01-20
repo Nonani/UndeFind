@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
@@ -13,6 +15,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  HttpOverrides.global = MyHttpOverrides(); // http 인증서 오류 해결
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/.env"); // 2번코드
   AuthRepository.initialize(appKey: dotenv.env['APP_KEY'] ?? '');
@@ -92,5 +95,13 @@ class MyApp extends StatelessWidget {
     } else {
       return const SplashScreen();
     }
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }

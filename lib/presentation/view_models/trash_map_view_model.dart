@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:logger/logger.dart';
 import '../../data/repositories/trash_repository.dart';
 import '../../domain/entities/trash.dart';
 import '../../domain/usecases/fetch_trash_usecase.dart';
@@ -8,7 +9,7 @@ class TrashMapViewModel extends ChangeNotifier {
   FetchTrashUseCase useCase = FetchTrashUseCase(TrashRepositoryImpl());
   bool _isFetching = false;
   List<Trash> _trashList = [];
-
+  Logger logger = Logger();
   TrashMapViewModel();
 
   LatLng get jejuDocheong => LatLng(33.4890464, 126.4980324);
@@ -19,11 +20,13 @@ class TrashMapViewModel extends ChangeNotifier {
   bool get isFetching => _isFetching;
 
   Future<bool> fetchTrash() async {
+    logger.w('fetchTrash start');
     _isFetching = true;
     notifyListeners();
     _trashList = await useCase.execute();
     _isFetching = false;
     notifyListeners();
+    logger.w('fetchTrash end');
     return true;
   }
 }
