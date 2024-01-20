@@ -45,7 +45,7 @@ class NaviMapScreen extends StatelessWidget {
                     getAddress(e.location.latitude, e.location.longitude))),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<String>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState != ConnectionState.done) {
                     return const Center(
                         child: CircularProgressIndicator(color: Colors.white,)); // 로딩 중일 때 출력할 위젯
                   } else {
