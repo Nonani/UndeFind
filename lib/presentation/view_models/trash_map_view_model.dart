@@ -13,8 +13,8 @@ class TrashMapViewModel extends ChangeNotifier {
 
   LatLng get jejuDocheong => LatLng(33.4890464, 126.4980324);
   List<Trash> get trashList => _trashList;
-  List<Trash> get distantSortedTrashList => _trashList
-    ..sort((a, b) => -a.distant.compareTo(b.distant));
+  List<Trash> get sortedTrashList => _trashList
+    ..sort((a, b) => -a.priority.compareTo(b.priority));
 
   bool get isFetching => _isFetching;
 
