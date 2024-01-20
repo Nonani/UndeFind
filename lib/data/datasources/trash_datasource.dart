@@ -10,11 +10,12 @@
 
     Future<List<Trash>> fetchTrash() async {
       // 임시 데이터
-      List<Map<String, dynamic>> tempData = [
+      List<Map<String, dynamic>> tempData =[
         {
           "id": "1",
           "type": ["plastic", "metal"],
-          "distant": 2.1,
+          "distant" : 2.1,
+          "priority" : 2,
           "location": {
             "lat": 33.3910079,
             "lng": 126.2220771
@@ -23,82 +24,11 @@
         {
           "id": "2",
           "type": ["paper"],
-          "distant": 12.3,
+          "distant" : 12.3,
+          "priority" : 1,
           "location": {
-            "lat": 33.490297,
-            "lng": 126.413913
-          }
-        },
-        {
-          "id": "1",
-          "type": ["plastic", "metal"],
-          "distant": 2.1,
-          "location": {
-            "lat": 33.3910079,
-            "lng": 126.2220771
-          }
-        },
-        {
-          "id": "2",
-          "type": ["paper"],
-          "distant": 12.3,
-          "location": {
-            "lat": 33.490297,
-            "lng": 126.413913
-          }
-        },
-        {
-          "id": "1",
-          "type": ["plastic", "metal"],
-          "distant": 2.1,
-          "location": {
-            "lat": 33.3910079,
-            "lng": 126.2220771
-          }
-        },
-        {
-          "id": "2",
-          "type": ["paper"],
-          "distant": 12.3,
-          "location": {
-            "lat": 33.490297,
-            "lng": 126.413913
-          }
-        },
-        {
-          "id": "1",
-          "type": ["plastic", "metal"],
-          "distant": 2.1,
-          "location": {
-            "lat": 33.3910079,
-            "lng": 126.2220771
-          }
-        },
-        {
-          "id": "2",
-          "type": ["paper"],
-          "distant": 12.3,
-          "location": {
-            "lat": 33.490297,
-            "lng": 126.413913
-          }
-        },
-        {
-          "id": "1",
-          "type": ["plastic", "metal"],
-          "distant": 2.1,
-          "location": {
-            "lat": 33.3910079,
-            "lng": 126.2220771
-          }
-        },
-        {
-          "id": "2",
-          "type": ["paper"],
-          "distant": 12.3,
-          "location": {
-            "lat": 33.490297,
-            "lng": 126.413913
+            "lat": 37.4882919,
+            "lng": 127.0648862
           }
         },
       ];
@@ -109,6 +39,7 @@
           List<String>.from(item['type']),
           LatLng(item['location']['lat'], item['location']['lng']),
           item['distant'],
+          item['priority'],
         );
       }).toList();
       // final response = await http.get(Uri.parse('$baseUrl/trash'));
