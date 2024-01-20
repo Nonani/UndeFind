@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.phone), label: '담당자 찾기'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: '경로 찾기'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: '최적 수거 경로'),
         ],
       ),
     );
