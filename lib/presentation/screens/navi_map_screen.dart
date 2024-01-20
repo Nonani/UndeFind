@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../view_models/trash_map_view_model.dart';
-
+import 'package:transformable_list_view/transformable_list_view.dart';
 import 'package:http/http.dart' as http;
 
 class NaviMapScreen extends StatelessWidget {
@@ -49,13 +49,14 @@ class NaviMapScreen extends StatelessWidget {
                     return const Center(
                         child: CircularProgressIndicator(color: Colors.white,)); // 로딩 중일 때 출력할 위젯
                   } else {
-                    return ListView.builder(
+                    return TransformableListView.builder(
+                      getTransformMatrix: getTransformMatrix,
                       padding: const EdgeInsets.all(0),
                       itemCount: viewModel.sortedTrashList.length,
                       itemBuilder: (context, index) {
                         return Container(
                             height: 120,
-                            margin: const EdgeInsets.only(bottom: 8.0),
+                            margin: const EdgeInsets.only(bottom: 18.0),
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
@@ -64,42 +65,73 @@ class NaviMapScreen extends StatelessWidget {
                             child: Row(
                               children: [
                                 Container(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   width: sizeX * 4 / 5,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '쓰레기 번호 : ' + index.toString(),
+                                  child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '수거 순서 : ' + (index + 1).toString(),
+                                              style: const TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          height: 1,
+                                          color: Colors.grey,
+                                        ),
+
+                                        Container(
+                                          margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
+                                          child: Text(
+                                            "쓰레기 종류 : " +
+                                                viewModel
+                                                    .sortedTrashList[index].type
+                                                    .toString(),
                                             style: const TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
+                                              color: Color(0xff373737),
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Text(
-                                        "종류 : " +
-                                            viewModel
-                                                .sortedTrashList[index].type
-                                                .toString(),
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                      Text(
-                                        '주소 : ' + snapshot.data![index],
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
+                                        Container(
+                                          margin: const EdgeInsets.only(bottom: 1.0),
+                                          child: Text(
+                                            '주소 : ' + snapshot.data![index],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xff373737),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        Container(
+                                          margin: const EdgeInsets.only(bottom: 1.0),
+                                          child: Text(
+                                            "센터로부터의 거리 : " +
+                                                viewModel
+                                                    .sortedTrashList[index].distant
+                                                    .toStringAsFixed(2) + ' km',
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xff373737),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -164,4 +196,29 @@ class NaviMapScreen extends StatelessWidget {
   Future<String> getAddress(double latitude, double longtitude) async {
     return await getPlaceAddress(latitude, longtitude);
   }
+  Matrix4 getTransformMatrix(TransformableListItem item) {
+    /// final scale of child when the animation is completed
+    const endScaleBound = 0.85;
+
+    /// 0 when animation completed and [scale] == [endScaleBound]
+    /// 1 when animation starts and [scale] == 1
+    final animationProgress = item.visibleExtent / item.size.height;
+
+    /// result matrix
+    final paintTransform = Matrix4.identity();
+
+    /// animate only if item is on edge
+    if (item.position != TransformableListItemPosition.middle) {
+      final scale = endScaleBound + ((1 - endScaleBound) * animationProgress);
+
+      paintTransform
+        ..translate(item.size.width / 2)
+        ..scale(scale)
+        ..translate(-item.size.width / 2);
+    }
+
+    return paintTransform;
+  }
+
+
 }
