@@ -220,4 +220,5 @@ class NaviMapScreen extends StatelessWidget {
     return paintTransform;
   }
 
+
 }
