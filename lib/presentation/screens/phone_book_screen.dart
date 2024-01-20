@@ -108,6 +108,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
         ),
       ),
     );
+
   }
 
   void launchPhoneUrl(Uri uri) async {
@@ -122,14 +123,13 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
     List<Contact> contacts = [];
     // 전화번호부
 
-    for (int i = 0; i< 20; i++) {
-      contacts.add(Contact(
-          '제주청 해양오염방제과', '064-801-2591', Icons.sentiment_very_satisfied));
-      contacts.add(Contact(
-          '제주시 해양오염방제과', '064-766-2591', Icons.sentiment_very_satisfied));
-      contacts.add(Contact(
-          '서귀포시 해양오염방제과', '064-793-2591', Icons.sentiment_very_satisfied));
-    }
+    contacts.add(Contact(
+        '제주청 해양오염방제과', '064-801-2591', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주시 해양오염방제과', '064-766-2591', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '서귀포시 해양오염방제과', '064-793-2591', Icons.sentiment_very_satisfied));
+
     return contacts;
   }
 
@@ -154,3 +154,5 @@ class Contact {
   IconData icon;
   Contact(this.name, this.number, this.icon);
 }
+
+
