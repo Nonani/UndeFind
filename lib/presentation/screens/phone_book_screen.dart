@@ -28,9 +28,7 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
       width: sizeX,
       height: sizeY,
       color: Colors.black,
-      child: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Column(
+      child: Column(
           children: [
             Container(
               height: 100,
@@ -74,39 +72,38 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
               height: 1,
               color: Colors.grey,
             ),
-            Container(
-              color: Colors.white,
-              width: sizeX,
-              height: sizeY,
-              child: ListView.separated(
-                itemCount: contacts.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(contacts[index].name),
-                    subtitle: Text(contacts[index].number),
-                    leading: CircleAvatar(
-                      child: Icon(contacts[index].icon),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.call),
-                      onPressed: () {
-                        launchPhoneUrl(Uri.parse('tel:${contacts[index].number}'));
-                      },
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider(
-                    height: 1,
-                    color: Colors.grey,
-                  );
-                },
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                child: ListView.separated(
+                  itemCount: contacts.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(contacts[index].name),
+                      subtitle: Text(contacts[index].number),
+                      leading: CircleAvatar(
+                        child: Icon(contacts[index].icon),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.call),
+                        onPressed: () {
+                          launchPhoneUrl(Uri.parse('tel:${contacts[index].number}'));
+                        },
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(
+                      height: 1,
+                      color: Colors.grey,
+                    );
+                  },
+                ),
               ),
             ),
           ],
         ),
-      ),
     );
 
   }
@@ -128,6 +125,28 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
         '제주시 해양오염방제과', '064-766-2591', Icons.sentiment_very_satisfied));
     contacts.add(Contact(
         '서귀포시 해양오염방제과', '064-793-2591', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주도청 환경관리과', '064-728-3129', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주도청 환경정책과 ', '064-710-6010', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '해양환경공단 제주사업소', '064-753-8396', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '해양환경공단 서귀포사업소', '064-762-2856', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주시 환경관리과', '064-728-3129', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '서귀포시 생활환경과', '064-760-2930', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주환경운동연합', '064-759-2162', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '제주해경 해양오염방제과', '064-766-2191', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '해양수산부 해양환경정책과', '044-200-5280', Icons.sentiment_very_satisfied));
+    contacts.add(Contact(
+        '해양수산부 해양보전과', '044-200-5300', Icons.sentiment_very_satisfied));
+
+
 
     return contacts;
   }
