@@ -120,9 +120,8 @@ class NaviMapScreen extends StatelessWidget {
                                           margin: const EdgeInsets.only(bottom: 1.0),
                                           child: Text(
                                             "센터로부터의 거리 : " +
-                                                viewModel
-                                                    .sortedTrashList[index].distant
-                                                    .toStringAsFixed(2) + ' km',
+                                                (viewModel
+                                                    .sortedTrashList[index].distant/1000).toStringAsFixed(2) + ' km',
                                             style: const TextStyle(
                                               fontSize: 15,
                                               color: Color(0xff373737),
